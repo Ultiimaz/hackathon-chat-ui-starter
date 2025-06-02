@@ -1,11 +1,3 @@
-// Configuration - Replace with your actual endpoint
-const CONFIG = {
-    apiUrl: 'http://localhost:1234/v1/chat/completions',
-    apiKey: 'not-needed',  // Optional API key
-    model: 'local-model',  // Default model
-    initialSystemPrompt: 'You are a helpful assistant.' // System prompt
-};
-
 // State management
 const state = {
     messages: [],
@@ -17,7 +9,6 @@ const state = {
 
 // DOM Elements
 const chatContainer = document.getElementById('chat-container');
-const welcomeScreen = document.getElementById('welcome-screen');
 const userInput = document.getElementById('user-input');
 const sendButton = document.getElementById('send-button');
 const newChatButton = document.getElementById('new-chat-btn');
@@ -107,12 +98,6 @@ function renderChatHistory() {
 function createNewChat() {
     state.messages = [];
     state.currentChatId = Date.now().toString();
-    
-    // Add system message
-    state.messages.push({
-        role: 'system',
-        content: CONFIG.initialSystemPrompt
-    });
 
     // Add to chat history
     state.chatHistory.unshift({
@@ -146,7 +131,6 @@ function loadChat(chatId) {
 // Clear chat UI
 function clearChatUI() {
     chatContainer.innerHTML = '';
-    welcomeScreen.style.display = 'none';
 }
 
 // Update chat title based on the first user message
@@ -377,21 +361,14 @@ async function sendMessage() {
     state.isGenerating = true;
     
     try {
-        // Prepare the API request
-        const requestBody = {
-            model: CONFIG.model,
-            messages: state.messages,
-            stream: true,
-            temperature: 0.7
-        };
-        
-        const response = await fetch(CONFIG.apiUrl, {
+        /////////////////// START YOUR BACKEND CALL HERE ///////////////////
+        // Make a POST call
+        const response = await fetch("SOME URL", {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
-                ...(CONFIG.apiKey && { 'Authorization': `Bearer ${CONFIG.apiKey}` })
+                'Content-Type': 'application/json'
             },
-            body: JSON.stringify(requestBody)
+            body: JSON.stringify({data: "data"})
         });
         
         if (!response.ok) {
@@ -403,60 +380,13 @@ async function sendMessage() {
         
         // Create container for AI message
         appendMessageToUI('assistant', '');
-        const aiMessageElement = chatContainer.lastChild.querySelector('.message-content');
-        
-        let fullResponse = '';
-        
-        // Process the stream
-        const reader = response.body.getReader();
-        const decoder = new TextDecoder();
-        
-        let buffer = '';
-        
-        while (true) {
-            const { done, value } = await reader.read();
-            if (done) break;
-            
-            buffer += decoder.decode(value, { stream: true });
-            
-            // Process complete JSON objects in the buffer
-            let lastJSONEnd = 0;
-            
-            // Try to find and parse each chunk from the stream
-            while (buffer.indexOf('\n', lastJSONEnd) !== -1) {
-                const lineEnd = buffer.indexOf('\n', lastJSONEnd);
-                const line = buffer.substring(lastJSONEnd, lineEnd).trim();
-                lastJSONEnd = lineEnd + 1;
-                
-                if (line.startsWith('data: ')) {
-                    const jsonStr = line.slice(6);
-                    
-                    // Handle [DONE] signal
-                    if (jsonStr === '[DONE]') continue;
-                    
-                    try {
-                        const json = JSON.parse(jsonStr);
-                        
-                        // Extract content from the chunk
-                        const content = json.choices?.[0]?.delta?.content || '';
-                        if (content) {
-                            fullResponse += content;
-                            
-                            // Update the UI with the new content
-                            aiMessageElement.innerHTML = formatMarkdown(fullResponse);
-                            
-                            // Scroll to the bottom
-                            chatContainer.scrollTop = chatContainer.scrollHeight;
-                        }
-                    } catch (e) {
-                        console.error('Error parsing JSON from stream:', e);
-                    }
-                }
-            }
-            
-            // Keep any incomplete data in the buffer
-            buffer = buffer.substring(lastJSONEnd);
-        }
+
+        // Place the response from your API here
+        let fullResponse = 'This is some response from your API';
+        //let fullResponse = formatMarkdown('# This is some response from your API in markdown');
+
+        // Scroll to the bottom
+        chatContainer.scrollTop = chatContainer.scrollHeight;
         
         // Add AI response to state
         state.messages.push({

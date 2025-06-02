@@ -43,50 +43,6 @@
     --shadow-color: rgba(16, 163, 127, 0.3);
 }
 
-/* Night Blue Theme */
-[data-theme="night-blue"] {
-    --primary: #61afef;
-    --bg-color: #1a1b26;
-    --text-color: #a9b1d6;
-    --chat-bg: #24283b;
-    --user-msg-bg: #61afef;
-    --user-msg-color: #1a1b26;
-    --ai-msg-bg: #2a2e42;
-    --ai-msg-color: #a9b1d6;
-    --border-color: #343a52;
-    --sidebar-bg: #16161e;
-    --sidebar-text: #a9b1d6;
-    --sidebar-btn-bg: #24283b;
-    --sidebar-btn-hover: #2a2e42;
-    --code-bg: #282c40;
-    --code-color: #a9b1d6;
-    --input-bg: #2a2e42;
-    --hover-color: rgba(97, 175, 239, 0.2);
-    --shadow-color: rgba(97, 175, 239, 0.3);
-}
-
-/* Sepia Theme */
-[data-theme="sepia"] {
-    --primary: #8c6c4e;
-    --bg-color: #f0e7da;
-    --text-color: #5c4b3c;
-    --chat-bg: #f8f0e3;
-    --user-msg-bg: #8c6c4e;
-    --user-msg-color: #f8f0e3;
-    --ai-msg-bg: #e8dccb;
-    --ai-msg-color: #5c4b3c;
-    --border-color: #d2c2ad;
-    --sidebar-bg: #e0d0b8;
-    --sidebar-text: #5c4b3c;
-    --sidebar-btn-bg: #d0bea6;
-    --sidebar-btn-hover: #c0af98;
-    --code-bg: #e0d0b8;
-    --code-color: #5c4b3c;
-    --input-bg: #e8dccb;
-    --hover-color: rgba(140, 108, 78, 0.1);
-    --shadow-color: rgba(140, 108, 78, 0.2);
-}
-
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     margin: 0;
@@ -301,27 +257,6 @@ body {
     flex-direction: column;
     background-color: var(--chat-bg);
     transition: background-color 0.3s ease;
-}
-
-.welcome-screen {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    text-align: center;
-    padding: 20px;
-}
-
-.welcome-screen h1 {
-    font-size: 2rem;
-    margin-bottom: 1rem;
-}
-
-.welcome-screen p {
-    color: var(--text-color);
-    opacity: 0.8;
-    max-width: 600px;
 }
 
 .message {
